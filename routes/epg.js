@@ -3,6 +3,7 @@ import {buildxml} from '../services/xmlBuilder.js'
 
 const api = express.Router();
 
+api.get('/api/epg', epgGenerator);
 api.get('/api/epg/:seriestype', epgGenerator);
 
 async function epgGenerator(req, res) {

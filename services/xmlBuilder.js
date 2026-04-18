@@ -44,14 +44,14 @@ export async function buildxml(seriestype) {
                 .ele('title').txt(`${title}`).up()
                 .ele('sub-title').txt(`${subtitle}`).up()
                 .ele('desc').txt(`${session.year} ${meeting.meeting_name} ${session.session_name}`).up();
-                if (gameThumbs) {
-                    const params = new URLSearchParams({
-                        title: meeting.meeting_name,
-                        subtitle: session.session_name,
-                        iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`
-                    })
-                    prog.ele('icon', { src: `${gameThumbs}?${params}` }).up()
-                }
+                // if (gameThumbs) {
+                //     const params = new URLSearchParams({
+                //         title: meeting.meeting_name,
+                //         subtitle: session.session_name,
+                //         iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`
+                //     })
+                //     prog.ele('icon', { src: `${gameThumbs}?${params}` }).up()
+                // }
                 prog.ele('episode-num', { system: 'original-air-date' }).txt(`${airDate}`).up()
             prog.up();
         }
