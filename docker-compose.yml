@@ -1,0 +1,11 @@
+services:
+  f1-epg:
+    image: ghcr.io/brheinfelder/f1-epg:latest
+    container_name: f1-epg
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - EPG_DAYS=14
+      - GAME_THUMBS_URL=
