@@ -8,7 +8,6 @@ export async function fetchMeetings() {
         });
     const meetingsResponse = await fetch(`https://api.openf1.org/v1/meetings?${params}`);
     const meetings = await meetingsResponse.json();
-    console.log(meetings);
     return meetings;
 }
 
@@ -21,6 +20,5 @@ export async function fetchSessions(meeting) {
         });
     const sessionsResponse = await fetch(`https://api.openf1.org/v1/sessions?${params}`);
     const sessions = await sessionsResponse.json();
-    console.log(sessions);
     return sessions;
 }

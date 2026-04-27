@@ -1,6 +1,6 @@
 {
   "name": "f1-epg",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "24/7 F1 EPG with game-thumbs support",
   "homepage": "https://github.com/brheinfelder/F1-EPG#readme",
   "bugs": {

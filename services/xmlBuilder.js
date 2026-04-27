@@ -1,7 +1,7 @@
 import { create } from "xmlbuilder2";
 import { fetchMeetings, fetchSessions } from "./eventAPI.js";
 import { toXmltvDate } from "../helpers/timeHelpers.js";
-import { gameThumbs } from "../config.js";
+import { gameThumbs, aspect } from "../config.js";
 
 export async function buildxml(seriestype) {
     let title, subtitle;
@@ -44,19 +44,20 @@ export async function buildxml(seriestype) {
                 .ele('title').txt(`${title}`).up()
                 .ele('sub-title').txt(`${subtitle}`).up()
                 .ele('desc').txt(`${session.year} ${meeting.meeting_name} ${session.session_name}`).up();
-                // if (gameThumbs) {
-                //     const params = new URLSearchParams({
-                //         title: meeting.meeting_name,
-                //         subtitle: session.session_name,
-                //         iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`
-                //     })
-                //     prog.ele('icon', { src: `${gameThumbs}?${params}` }).up()
-                // }
+                if (gameThumbs) {
+                    const params = new URLSearchParams({
+                        title: meeting.meeting_name,
+                        subtitle: session.session_name,
+                        iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`
+                    })
+                    prog.ele('icon', { src: `${gameThumbs}?${params}${aspect ? `&aspect=${aspect}` : ""}` }).up()
+                }
                 prog.ele('episode-num', { system: 'original-air-date' }).txt(`${airDate}`).up()
             prog.up();
         }
     }
 
     const xml = tv.doc().end({ prettyPrint: true });
+    console.log(xml);
     return xml;
 }
