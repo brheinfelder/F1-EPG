@@ -6,12 +6,17 @@ import { gameThumbs, aspect } from "../config.js";
 export async function buildxml(seriestype) {
     let title, subtitle;
 
-    const tv = create({ version: '1.0', encoding: 'UTF-8' }).ele('tv');
+    const tv = create({ version: "1.0", encoding: "UTF-8" }).ele("tv");
 
-    tv.ele('channel', { id: 'f1' })
-        .ele('display-name').txt('Formula 1').up()
-        .ele('icon', { src: 'https://www.formula1.com/assets/home/_next/static/media/f1-logo-180.1db9e85b.png' }).up()
-    .up();
+    tv.ele("channel", { id: "f1" })
+        .ele("display-name")
+        .txt("Formula 1")
+        .up()
+        .ele("icon", {
+            src: "https://www.formula1.com/assets/home/_next/static/media/f1-logo-180.1db9e85b.png",
+        })
+        .up()
+        .up();
 
     const meetings = await fetchMeetings();
 
@@ -19,7 +24,7 @@ export async function buildxml(seriestype) {
         const sessions = await fetchSessions(meeting);
         for (const session of sessions) {
             if (session.is_cancelled) continue;
-            const airDate = session.date_start.slice(0, 16).replace('T', ' ');
+            const airDate = session.date_start.slice(0, 16).replace("T", " ");
             switch (seriestype) {
                 case "all":
                     title = "Formula 1";
@@ -36,23 +41,40 @@ export async function buildxml(seriestype) {
                 case "season":
                 default:
                     title = `Formula 1 ${meeting.year}`;
-                    subtitle = `${meeting.meeting_name} ${session.session_name}`
+                    subtitle = `${meeting.meeting_name} ${session.session_name}`;
                     break;
-        }
+            }
 
-            const prog = tv.ele('programme', { start: toXmltvDate(session.date_start), stop: toXmltvDate(session.date_end), channel: 'f1' })
-                .ele('title').txt(`${title}`).up()
-                .ele('sub-title').txt(`${subtitle}`).up()
-                .ele('desc').txt(`${session.year} ${meeting.meeting_name} ${session.session_name}`).up();
-                if (gameThumbs) {
-                    const params = new URLSearchParams({
-                        title: meeting.meeting_name,
-                        subtitle: session.session_name,
-                        iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`
-                    })
-                    prog.ele('icon', { src: `${gameThumbs}?${params}${aspect ? `&aspect=${aspect}` : ""}` }).up()
-                }
-                prog.ele('episode-num', { system: 'original-air-date' }).txt(`${airDate}`).up()
+            const prog = tv
+                .ele("programme", {
+                    start: toXmltvDate(session.date_start),
+                    stop: toXmltvDate(session.date_end),
+                    channel: "f1",
+                })
+                .ele("title")
+                .txt(`${title}`)
+                .up()
+                .ele("sub-title")
+                .txt(`${subtitle}`)
+                .up()
+                .ele("desc")
+                .txt(
+                    `${session.year} ${meeting.meeting_name} ${session.session_name}`,
+                )
+                .up();
+            if (gameThumbs) {
+                const params = new URLSearchParams({
+                    title: meeting.meeting_name,
+                    subtitle: session.session_name,
+                    iconurl: `https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000001/common/f1/2026/track/2026track${meeting.circuit_short_name.toLowerCase()}detailed.png`,
+                });
+                prog.ele("icon", {
+                    src: `${gameThumbs}?${params}${aspect ? `&aspect=${aspect}` : ""}`,
+                }).up();
+            }
+            prog.ele("episode-num", { system: "original-air-date" })
+                .txt(`${airDate}`)
+                .up();
             prog.up();
         }
     }

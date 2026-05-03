@@ -1,6 +1,6 @@
-import express from 'express';
-import {port} from './config.js';
-import api from './routes/epg.js'
+import express from "express";
+import { port } from "./config.js";
+import api from "./routes/epg.js";
 
 const app = express();
 
